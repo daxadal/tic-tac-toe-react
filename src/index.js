@@ -15,10 +15,10 @@ function Board() {
 
   function handleClick(i) {
     console.log("click", i);
-    setSquares((squares) => {
-      squares[i] = "X";
-      return [...squares];
-    });
+
+    const newSquares = [...squares];
+    newSquares[i] = "X";
+    setSquares(newSquares);
   }
 
   function renderSquare(i) {
