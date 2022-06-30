@@ -2,13 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-function Square() {
-  return <button className="square">{/* TODO */}</button>;
+function Square(props) {
+  return (
+    <button className="square" onClick={() => console.log("click", props.value)}>
+      {props.value}
+    </button>
+  );
 }
 
 function Board() {
   function renderSquare(i) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   const status = "Next player: X";
