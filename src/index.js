@@ -12,20 +12,23 @@ function Square(props) {
 
 function Board() {
   const [squares, setSquares] = useState(new Array(9).fill(null));
+  const [player, setPlayer] = useState("X");
 
   function handleClick(i) {
     console.log("click", i);
 
     const newSquares = [...squares];
-    newSquares[i] = "X";
+    newSquares[i] = player;
     setSquares(newSquares);
+
+    setPlayer(player === "X" ? "O" : "X");
   }
 
   function renderSquare(i) {
     return <Square value={squares[i]} onClick={() => handleClick(i)} />;
   }
 
-  const status = "Next player: X";
+  const status = `Next player: ${player}`;
 
   return (
     <div>
