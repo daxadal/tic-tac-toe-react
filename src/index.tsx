@@ -19,9 +19,40 @@ function Square(props: SquareProps) {
   );
 }
 
-function Board() {
-  const [squares, setSquares] = useState<Squares>(new Array(9).fill(null));
+interface BoardProps {
+  squares: Squares;
+  onClick: (i: number) => void;
+}
+
+function Board(props: BoardProps) {
+  function renderSquare(i: number) {
+    return <Square value={props.squares[i]} onClick={() => props.onClick(i)} />;
+  }
+
+  return (
+    <div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
+      </div>
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+    </div>
+  );
+}
+
+function Game() {
   const [player, setPlayer] = useState<Player>("X");
+  const [history, setHistory] = useState<Squares[]>([new Array(9).fill(null)]);
 
   function calculateWinner(squares: Squares): NullablePlayer {
     const lines = [
@@ -49,54 +80,31 @@ function Board() {
 
   function handleClick(i: number) {
     console.log("click", i);
+    const squares = history[history.length - 1];
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
 
     const newSquares = [...squares];
     newSquares[i] = player;
-    setSquares(newSquares);
+    setHistory([...history, newSquares]);
 
     setPlayer(player === "X" ? "O" : "X");
   }
 
-  function renderSquare(i: number) {
-    return <Square value={squares[i]} onClick={() => handleClick(i)} />;
-  }
-
-  const winner = calculateWinner(squares);
+  const winner = calculateWinner(history[history.length - 1]);
   const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
   return (
-    <div>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  );
-}
-
-function Game() {
-  return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board
+          squares={history[history.length - 1]}
+          onClick={handleClick}
+        />
       </div>
       <div className="game-info">
-        <div>{/* status */}</div>
+        <div className="status">{status}</div>
         <ol>{/* TODO */}</ol>
       </div>
     </div>
