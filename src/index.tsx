@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-type Player = 'X' | 'O';
+type Player = "X" | "O";
 type NullablePlayer = Player | null;
 
 interface SquareProps {
-  value: NullablePlayer,
-  onClick: () => void
+  value: NullablePlayer;
+  onClick: () => void;
 }
 
 function Square(props: SquareProps) {
@@ -19,7 +19,9 @@ function Square(props: SquareProps) {
 }
 
 function Board() {
-  const [squares, setSquares] = useState<NullablePlayer[]>(new Array(9).fill(null));
+  const [squares, setSquares] = useState<NullablePlayer[]>(
+    new Array(9).fill(null)
+  );
   const [player, setPlayer] = useState<Player>("X");
 
   function handleClick(i: number) {
@@ -76,5 +78,7 @@ function Game() {
 
 // ========================================
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(<Game />);
