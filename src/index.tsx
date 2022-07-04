@@ -4,6 +4,7 @@ import "./index.css";
 
 type Player = "X" | "O";
 type NullablePlayer = Player | null;
+type Squares = NullablePlayer[];
 
 interface SquareProps {
   value: NullablePlayer;
@@ -19,12 +20,10 @@ function Square(props: SquareProps) {
 }
 
 function Board() {
-  const [squares, setSquares] = useState<NullablePlayer[]>(
-    new Array(9).fill(null)
-  );
+  const [squares, setSquares] = useState<Squares>(new Array(9).fill(null));
   const [player, setPlayer] = useState<Player>("X");
 
-  function calculateWinner(squares: NullablePlayer[]): NullablePlayer {
+  function calculateWinner(squares: Squares): NullablePlayer {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
