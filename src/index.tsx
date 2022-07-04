@@ -24,8 +24,35 @@ function Board() {
   );
   const [player, setPlayer] = useState<Player>("X");
 
+  function calculateWinner(squares: NullablePlayer[]): NullablePlayer {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
+      ) {
+        return squares[a];
+      }
+    }
+    return null;
+  }
+
   function handleClick(i: number) {
     console.log("click", i);
+    if (squares[i] || calculateWinner(squares)) {
+      return;
+    }
 
     const newSquares = [...squares];
     newSquares[i] = player;
@@ -38,7 +65,8 @@ function Board() {
     return <Square value={squares[i]} onClick={() => handleClick(i)} />;
   }
 
-  const status = `Next player: ${player}`;
+  const winner = calculateWinner(squares);
+  const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
   return (
     <div>
