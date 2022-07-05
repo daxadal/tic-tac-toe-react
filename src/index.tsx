@@ -87,14 +87,14 @@ function History(props: HistoryProps) {
 
   const stepList = props.history.map((squares, step) => renderStep(step));
   return (
-    <div>
+    <>
       <ol>{ascending ? stepList : stepList.reverse()}</ol>Ascending order:{" "}
       <input
         type="checkbox"
         checked={ascending}
         onChange={() => setAscending(!ascending)}
       />
-    </div>
+    </>
   );
 }
 
