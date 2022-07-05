@@ -51,6 +51,34 @@ interface HistoryItem {
   indexClicked: number;
 }
 
+interface HistoryProps {
+  history: HistoryItem[];
+  onClick: (newStep: number) => void;
+  currentStep: number;
+}
+
+function History(props: HistoryProps) {
+  function renderStep(step: number) {
+    const player = step % 2 === 0 ? "O" : "X";
+    const row = Math.floor(props.history[step].indexClicked / 3);
+    const column = props.history[step].indexClicked % 3;
+    const text =
+      step > 0
+        ? `Go to move #${step}: ${player} on (${row},${column})`
+        : "Go to game start";
+
+    return (
+      <li key={step}>
+        <button onClick={() => props.onClick(step)}>
+          {step === props.currentStep ? <strong>{text}</strong> : text}
+        </button>
+      </li>
+    );
+  }
+
+  return <ol>{props.history.map((squares, step) => renderStep(step))}</ol>;
+}
+
 function Game() {
   const [player, setPlayer] = useState<Player>("X");
   const [history, setHistory] = useState<HistoryItem[]>([
@@ -106,26 +134,6 @@ function Game() {
     setPlayer(newStep % 2 === 0 ? "X" : "O");
   }
 
-  function renderHistory() {
-    return history.map((squares, step) => {
-      const player = step % 2 === 0 ? "O" : "X";
-      const row = Math.floor(history[step].indexClicked / 3);
-      const column = history[step].indexClicked % 3;
-      const text =
-        step > 0
-          ? `Go to move #${step}: ${player} on (${row},${column})`
-          : "Go to game start";
-
-      return (
-        <li key={step}>
-          <button onClick={() => jumpToMove(step)}>
-            {step === currentStep ? <strong>{text}</strong> : text}
-          </button>
-        </li>
-      );
-    });
-  }
-
   const winner = calculateWinner(history[history.length - 1].squares);
   const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
@@ -136,7 +144,11 @@ function Game() {
       </div>
       <div className="game-info">
         <div className="status">{status}</div>
-        <ol>{renderHistory()}</ol>
+        <History
+          history={history}
+          onClick={jumpToMove}
+          currentStep={currentStep}
+        />
       </div>
     </div>
   );
