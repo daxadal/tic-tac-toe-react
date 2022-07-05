@@ -115,13 +115,15 @@ function Game() {
       const player = step % 2 === 0 ? "O" : "X";
       const row = Math.floor(history[step].indexClicked / 3);
       const column = history[step].indexClicked % 3;
+      const text =
+        step > 0
+          ? `Go to move #${step}: ${player} on (${row},${column})`
+          : "Go to game start";
 
       return (
         <li key={step}>
           <button onClick={() => jumpToMove(step)}>
-            {step > 0
-              ? `Go to move #${step}: ${player} on (${row},${column})`
-              : "Go to game start"}
+            {text}
           </button>
         </li>
       );
