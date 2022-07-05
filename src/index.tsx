@@ -156,7 +156,7 @@ function Game() {
   const winnerLine = calculateWinnerLine(history[history.length - 1].squares);
   const winner =
     winnerLine.length === 0 ? null : history.length % 2 === 0 ? "X" : "O";
-  const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
+  const status = history.length === 10 ? "Tie": winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
   return (
     <div className="game">
