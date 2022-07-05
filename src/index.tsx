@@ -110,6 +110,22 @@ function Game() {
     setPlayer(newStep % 2 === 0 ? "X" : "O");
   }
 
+  function renderHistory() {
+    const player = step % 2 === 0 ? "O" : "X";
+    const row = Math.floor(history[step].indexClicked / 3);
+    const column = history[step].indexClicked % 3;
+
+    return history.map((squares, step) => (
+      <li key={step}>
+        <button onClick={() => jumpToMove(step)}>
+          {step > 0
+            ? `Go to move #${step}: ${player} on (${row},${column})`
+            : "Go to game start"}
+        </button>
+      </li>
+    ));
+  }
+
   const winner = calculateWinner(history[history.length - 1].squares);
   const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
@@ -120,21 +136,7 @@ function Game() {
       </div>
       <div className="game-info">
         <div className="status">{status}</div>
-        <ol>
-          {history.map((squares, step) => (
-            <li key={step}>
-              <button onClick={() => jumpToMove(step)}>
-                {step > 0
-                  ? `Go to move #${step}: ${
-                      step % 2 === 0 ? "O" : "X"
-                    } on (${Math.floor(history[step].indexClicked / 3)},${
-                      history[step].indexClicked % 3
-                    })`
-                  : "Go to game start"}
-              </button>
-            </li>
-          ))}
-        </ol>
+        <ol>{renderHistory()}</ol>
       </div>
     </div>
   );
