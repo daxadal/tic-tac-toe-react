@@ -8,12 +8,17 @@ type Squares = NullablePlayer[];
 
 interface SquareProps {
   value: NullablePlayer;
+  bold: boolean;
   onClick: () => void;
 }
 
 function Square(props: SquareProps) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+      className="square"
+      onClick={props.onClick}
+      style={props.bold ? { color: "green" } : {}}
+    >
       {props.value}
     </button>
   );
@@ -22,6 +27,7 @@ function Square(props: SquareProps) {
 interface BoardProps {
   squares: Squares;
   onClick: (i: number) => void;
+  winnerLine: number[];
 }
 
 function Board(props: BoardProps) {
@@ -31,6 +37,7 @@ function Board(props: BoardProps) {
         key={i}
         value={props.squares[i]}
         onClick={() => props.onClick(i)}
+        bold={props.winnerLine.includes(i)}
       />
     );
   }
@@ -85,7 +92,7 @@ function History(props: HistoryProps) {
       <input
         type="checkbox"
         checked={ascending}
-        onClick={() => setAscending(!ascending)}
+        onChange={() => setAscending(!ascending)}
       />
     </div>
   );
@@ -98,7 +105,7 @@ function Game() {
   ]);
   const [currentStep, setCurrentStep] = useState(0);
 
-  function calculateWinner(squares: Squares): NullablePlayer {
+  function calculateWinnerLine(squares: Squares): number[] {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -116,16 +123,16 @@ function Game() {
         squares[a] === squares[b] &&
         squares[a] === squares[c]
       ) {
-        return squares[a];
+        return [a, b, c];
       }
     }
-    return null;
+    return [];
   }
 
   function handleClick(i: number) {
     console.log("click", i);
     const squares = history[currentStep].squares;
-    if (squares[i] || calculateWinner(squares)) {
+    if (squares[i] || calculateWinnerLine(squares).length > 0) {
       return;
     }
 
@@ -146,13 +153,19 @@ function Game() {
     setPlayer(newStep % 2 === 0 ? "X" : "O");
   }
 
-  const winner = calculateWinner(history[history.length - 1].squares);
+  const winnerLine = calculateWinnerLine(history[history.length - 1].squares);
+  const winner =
+    winnerLine.length === 0 ? null : history.length % 2 === 0 ? "X" : "O";
   const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board squares={history[currentStep].squares} onClick={handleClick} />
+        <Board
+          squares={history[currentStep].squares}
+          onClick={handleClick}
+          winnerLine={winnerLine}
+        />
       </div>
       <div className="game-info">
         <div className="status">{status}</div>
