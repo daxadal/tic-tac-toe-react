@@ -88,8 +88,10 @@ function History(props: HistoryProps) {
   const stepList = props.history.map((squares, step) => renderStep(step));
   return (
     <>
-      <ol>{ascending ? stepList : stepList.reverse()}</ol>Ascending order:{" "}
+      <ol>{ascending ? stepList : stepList.reverse()}</ol>
+      <label htmlFor="ascending">Ascending order:</label>
       <input
+        id="ascending"
         type="checkbox"
         checked={ascending}
         onChange={() => setAscending(!ascending)}
@@ -156,7 +158,12 @@ function Game() {
   const winnerLine = calculateWinnerLine(history[history.length - 1].squares);
   const winner =
     winnerLine.length === 0 ? null : history.length % 2 === 0 ? "X" : "O";
-  const status = history.length === 10 ? "Tie": winner ? `Winner: ${winner}` : `Next player: ${player}`;
+  const status =
+    history.length === 10
+      ? "Tie"
+      : winner
+      ? `Winner: ${winner}`
+      : `Next player: ${player}`;
 
   return (
     <div className="game">
