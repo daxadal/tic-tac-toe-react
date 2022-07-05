@@ -50,9 +50,16 @@ function Board(props: BoardProps) {
   );
 }
 
+interface HistoryItem {
+  squares: Squares;
+  indexClicked: number;
+}
+
 function Game() {
   const [player, setPlayer] = useState<Player>("X");
-  const [history, setHistory] = useState<Squares[]>([new Array(9).fill(null)]);
+  const [history, setHistory] = useState<HistoryItem[]>([
+    { squares: new Array(9).fill(null), indexClicked: -1 },
+  ]);
   const [step, setStep] = useState(0);
 
   function calculateWinner(squares: Squares): NullablePlayer {
@@ -81,14 +88,17 @@ function Game() {
 
   function handleClick(i: number) {
     console.log("click", i);
-    const squares = history[step];
+    const squares = history[step].squares;
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
 
     const newSquares = [...squares];
     newSquares[i] = player;
-    const newHistory = [...history.slice(0, step + 1), newSquares];
+    const newHistory = [
+      ...history.slice(0, step + 1),
+      { squares: newSquares, indexClicked: i },
+    ];
     setHistory(newHistory);
 
     setStep(newHistory.length - 1);
@@ -100,13 +110,13 @@ function Game() {
     setPlayer(newStep % 2 === 0 ? "X" : "O");
   }
 
-  const winner = calculateWinner(history[history.length - 1]);
+  const winner = calculateWinner(history[history.length - 1].squares);
   const status = winner ? `Winner: ${winner}` : `Next player: ${player}`;
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board squares={history[step]} onClick={handleClick} />
+        <Board squares={history[step].squares} onClick={handleClick} />
       </div>
       <div className="game-info">
         <div className="status">{status}</div>
@@ -114,7 +124,13 @@ function Game() {
           {history.map((squares, step) => (
             <li key={step}>
               <button onClick={() => jumpToMove(step)}>
-                {step > 0 ? `Go to move #${step}` : "Go to game start"}
+                {step > 0
+                  ? `Go to move #${step}: ${
+                      step % 2 === 0 ? "O" : "X"
+                    } on (${Math.floor(history[step].indexClicked / 3)},${
+                      history[step].indexClicked % 3
+                    })`
+                  : "Go to game start"}
               </button>
             </li>
           ))}
