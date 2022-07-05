@@ -60,7 +60,7 @@ function Game() {
   const [history, setHistory] = useState<HistoryItem[]>([
     { squares: new Array(9).fill(null), indexClicked: -1 },
   ]);
-  const [step, setStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
   function calculateWinner(squares: Squares): NullablePlayer {
     const lines = [
@@ -88,7 +88,7 @@ function Game() {
 
   function handleClick(i: number) {
     console.log("click", i);
-    const squares = history[step].squares;
+    const squares = history[currentStep].squares;
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
@@ -96,17 +96,17 @@ function Game() {
     const newSquares = [...squares];
     newSquares[i] = player;
     const newHistory = [
-      ...history.slice(0, step + 1),
+      ...history.slice(0, currentStep + 1),
       { squares: newSquares, indexClicked: i },
     ];
     setHistory(newHistory);
 
-    setStep(newHistory.length - 1);
+    setCurrentStep(newHistory.length - 1);
     setPlayer(player === "X" ? "O" : "X");
   }
 
   function jumpToMove(newStep: number) {
-    setStep(newStep);
+    setCurrentStep(newStep);
     setPlayer(newStep % 2 === 0 ? "X" : "O");
   }
 
@@ -123,7 +123,7 @@ function Game() {
       return (
         <li key={step}>
           <button onClick={() => jumpToMove(step)}>
-            {text}
+            {step === currentStep ? <strong>{text}</strong> : text}
           </button>
         </li>
       );
@@ -136,7 +136,7 @@ function Game() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board squares={history[step].squares} onClick={handleClick} />
+        <Board squares={history[currentStep].squares} onClick={handleClick} />
       </div>
       <div className="game-info">
         <div className="status">{status}</div>
