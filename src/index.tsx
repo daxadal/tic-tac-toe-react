@@ -58,6 +58,8 @@ interface HistoryProps {
 }
 
 function History(props: HistoryProps) {
+  const [ascending, setAscending] = useState(true);
+
   function renderStep(step: number) {
     const player = step % 2 === 0 ? "O" : "X";
     const row = Math.floor(props.history[step].indexClicked / 3);
@@ -76,7 +78,17 @@ function History(props: HistoryProps) {
     );
   }
 
-  return <ol>{props.history.map((squares, step) => renderStep(step))}</ol>;
+  const stepList = props.history.map((squares, step) => renderStep(step));
+  return (
+    <div>
+      <ol>{ascending ? stepList : stepList.reverse()}</ol>Ascending order:{" "}
+      <input
+        type="checkbox"
+        checked={ascending}
+        onClick={() => setAscending(!ascending)}
+      />
+    </div>
+  );
 }
 
 function Game() {
