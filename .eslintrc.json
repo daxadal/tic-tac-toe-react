@@ -19,9 +19,9 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
-    "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
-    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "no-use-before-define": "off",
+    "quotes": ["error", "double"],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -29,7 +29,8 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }]
   },
   "settings": {
     "import/resolver": {
