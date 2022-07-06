@@ -7,7 +7,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "airbnb",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -17,9 +18,10 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "@typescript-eslint/no-use-before-define": ["error"],
+    "prettier/prettier": "warn",
     "no-use-before-define": "off",
     "quotes": ["error", "double"],
     "import/extensions": [
@@ -34,7 +36,14 @@
   },
   "settings": {
     "import/resolver": {
-      "typescript": {}
-    }
+        "node": {
+          "paths": ["src"],
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        },
+        "typescript": {
+          "alwaysTryTypes": true,
+          "project": "."
+        }
+      }
   }
 }
