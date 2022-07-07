@@ -9,12 +9,14 @@ interface HistoryProps {
 }
 
 export default function History(props: HistoryProps) {
+  const { history, onClick, currentStep } = props;
+
   const [ascending, setAscending] = useState(true);
 
   function renderStep(step: number) {
     const player = step % 2 === 0 ? "O" : "X";
-    const row = Math.floor(props.history[step].indexClicked / 3);
-    const column = props.history[step].indexClicked % 3;
+    const row = Math.floor(history[step].indexClicked / 3);
+    const column = history[step].indexClicked % 3;
     const text =
       step > 0
         ? `Go to move #${step}: ${player} on (${row},${column})`
@@ -22,24 +24,26 @@ export default function History(props: HistoryProps) {
 
     return (
       <li key={step}>
-        <button onClick={() => props.onClick(step)}>
-          {step === props.currentStep ? <strong>{text}</strong> : text}
+        <button type="button" onClick={() => onClick(step)}>
+          {step === currentStep ? <strong>{text}</strong> : text}
         </button>
       </li>
     );
   }
 
-  const stepList = props.history.map((squares, step) => renderStep(step));
+  const stepList = history.map((squares, step) => renderStep(step));
   return (
     <>
       <ol>{ascending ? stepList : stepList.reverse()}</ol>
-      <label htmlFor="ascending">Ascending order:</label>
-      <input
-        id="ascending"
-        type="checkbox"
-        checked={ascending}
-        onChange={() => setAscending(!ascending)}
-      />
+      <label htmlFor="ascending">
+        Ascending order:
+        <input
+          id="ascending"
+          type="checkbox"
+          checked={ascending}
+          onChange={() => setAscending(!ascending)}
+        />
+      </label>
     </>
   );
 }

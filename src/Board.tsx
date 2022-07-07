@@ -1,7 +1,8 @@
 import React from "react";
 
-import { Square } from "./Square";
 import { Squares } from "./types";
+
+import Square from "./Square";
 
 import "./Board.css";
 
@@ -12,21 +13,24 @@ interface BoardProps {
 }
 
 export default function Board(props: BoardProps) {
+  const { squares, onClick, winnerLine } = props;
+
   function renderSquare(i: number) {
     return (
       <Square
         key={i}
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)}
-        bold={props.winnerLine.includes(i)}
+        value={squares[i]}
+        onClick={() => onClick(i)}
+        bold={winnerLine.includes(i)}
       />
     );
   }
 
   return (
     <div>
-      {new Array(3).fill(null).map((_, row) => (
-        <div key={"row-" + row} className="board-row">
+      {new Array(3).fill(null).map((_v, row) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={`row-${row}`} className="board-row">
           {new Array(3).fill(null).map((_, col) => renderSquare(row * 3 + col))}
         </div>
       ))}

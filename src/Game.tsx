@@ -25,7 +25,7 @@ export default function Game() {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i += 1) {
       const [a, b, c] = lines[i];
       if (
         squares[a] &&
@@ -39,8 +39,7 @@ export default function Game() {
   }
 
   function handleClick(i: number) {
-    console.log("click", i);
-    const squares = history[currentStep].squares;
+    const { squares } = history[currentStep];
     if (squares[i] || calculateWinnerLine(squares).length > 0) {
       return;
     }

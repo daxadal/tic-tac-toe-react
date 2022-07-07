@@ -10,14 +10,17 @@ interface SquareProps {
   onClick: () => void;
 }
 
-export function Square(props: SquareProps) {
+export default function Square(props: SquareProps) {
+  const { bold, onClick, value } = props;
+
   return (
     <button
+      type="button"
       className="square"
-      onClick={props.onClick}
-      style={props.bold ? { color: "green" } : {}}
+      onClick={onClick}
+      style={bold ? { color: "green" } : {}}
     >
-      {props.value}
+      {value}
     </button>
   );
 }

@@ -1,5 +1,6 @@
 {
   "env": {
+    "browser": true,
     "es2021": true,
     "node": true
   },
@@ -21,9 +22,13 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "@typescript-eslint/no-use-before-define": ["error"],
+    "react/jsx-no-bind": [
+      "error",
+      { "allowArrowFunctions": true, "allowFunctions": true }
+    ],
     "prettier/prettier": "warn",
     "no-use-before-define": "off",
-    "quotes": ["error", "double"],
+    "no-nested-ternary": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -32,18 +37,18 @@
         "tsx": "never"
       }
     ],
-    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }]
+    "react/jsx-filename-extension": ["warn", { "extensions": [".jsx", ".tsx"] }]
   },
   "settings": {
     "import/resolver": {
-        "node": {
-          "paths": ["src"],
-          "extensions": [".js", ".jsx", ".ts", ".tsx"]
-        },
-        "typescript": {
-          "alwaysTryTypes": true,
-          "project": "."
-        }
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "."
       }
+    }
   }
 }
