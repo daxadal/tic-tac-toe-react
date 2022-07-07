@@ -17,15 +17,17 @@ export default function History(props: HistoryProps) {
     const player = step % 2 === 0 ? "O" : "X";
     const row = Math.floor(history[step].indexClicked / 3);
     const column = history[step].indexClicked % 3;
-    const text =
-      step > 0
-        ? `Go to move #${step}: ${player} on (${row},${column})`
-        : "Go to game start";
 
     return (
       <li key={step}>
-        <button type="button" onClick={() => onClick(step)}>
-          {step === currentStep ? <strong>{text}</strong> : text}
+        <button
+          type="button"
+          onClick={() => onClick(step)}
+          style={{ fontWeight: step === currentStep ? "bold" : "normal" }}
+        >
+          {step > 0
+            ? `Go to move #${step}: ${player} on (${row},${column})`
+            : "Go to game start"}
         </button>
       </li>
     );
