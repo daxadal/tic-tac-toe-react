@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { NullablePlayer } from "./types";
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ bold: boolean }>`
   background: #fff;
   border: 1px solid #999;
   float: left;
@@ -16,6 +16,7 @@ const StyledButton = styled.button`
   padding: 0;
   text-align: center;
   width: 34px;
+  color: ${(props) => (props.bold ? "green" : "black")};
 
   &:focus {
     outline: none;
@@ -36,11 +37,7 @@ export default function Square(props: SquareProps) {
   const { bold, onClick, value } = props;
 
   return (
-    <StyledButton
-      type="button"
-      onClick={onClick}
-      style={bold ? { color: "green" } : {}}
-    >
+    <StyledButton type="button" onClick={onClick} bold={bold}>
       {value}
     </StyledButton>
   );

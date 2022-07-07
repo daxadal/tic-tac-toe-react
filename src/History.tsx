@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 import { HistoryItem } from "./types";
 
@@ -7,6 +8,10 @@ interface HistoryProps {
   onClick: (newStep: number) => void;
   currentStep: number;
 }
+
+const StyledButton = styled.button<{ stepIsCurrent: boolean }>`
+  font-weight: ${(props) => (props.stepIsCurrent ? "bold" : "normal")};
+`;
 
 export default function History(props: HistoryProps) {
   const { history, onClick, currentStep } = props;
@@ -20,15 +25,15 @@ export default function History(props: HistoryProps) {
 
     return (
       <li key={step}>
-        <button
+        <StyledButton
           type="button"
           onClick={() => onClick(step)}
-          style={{ fontWeight: step === currentStep ? "bold" : "normal" }}
+          stepIsCurrent={step === currentStep}
         >
           {step > 0
             ? `Go to move #${step}: ${player} on (${row},${column})`
             : "Go to game start"}
-        </button>
+        </StyledButton>
       </li>
     );
   }
