@@ -1,11 +1,23 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 import { Player, HistoryItem, Squares } from "./types";
 
 import Board from "./Board";
 import History from "./History";
 
-import "./Game.css";
+const WrapperDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const GameInfoDiv = styled.div`
+  margin-left: 20px;
+`;
+
+const StatusDiv = styled.div`
+  margin-bottom: 10px;
+`;
 
 export default function Game() {
   const [player, setPlayer] = useState<Player>("X");
@@ -72,22 +84,22 @@ export default function Game() {
       : `Next player: ${player}`;
 
   return (
-    <div className="game">
-      <div className="game-board">
+    <WrapperDiv>
+      <div>
         <Board
           squares={history[currentStep].squares}
           onClick={handleClick}
           winnerLine={winnerLine}
         />
       </div>
-      <div className="game-info">
-        <div className="status">{status}</div>
+      <GameInfoDiv>
+        <StatusDiv>{status}</StatusDiv>
         <History
           history={history}
           onClick={jumpToMove}
           currentStep={currentStep}
         />
-      </div>
-    </div>
+      </GameInfoDiv>
+    </WrapperDiv>
   );
 }

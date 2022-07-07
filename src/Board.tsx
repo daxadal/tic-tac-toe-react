@@ -1,10 +1,17 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Squares } from "./types";
 
 import Square from "./Square";
 
-import "./Board.css";
+const BoardRow = styled.div`
+  &:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+`;
 
 interface BoardProps {
   squares: Squares;
@@ -30,9 +37,9 @@ export default function Board(props: BoardProps) {
     <div>
       {new Array(3).fill(null).map((_v, row) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={`row-${row}`} className="board-row">
+        <BoardRow key={`row-${row}`}>
           {new Array(3).fill(null).map((_, col) => renderSquare(row * 3 + col))}
-        </div>
+        </BoardRow>
       ))}
     </div>
   );
