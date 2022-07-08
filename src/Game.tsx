@@ -9,10 +9,6 @@ import History from "./History";
 const WrapperDiv = styled.div`
   display: flex;
   flex-direction: row;
-
-  background-color: ${(props) => props.theme.background};
-  border-color: ${(props) => props.theme.border};
-  color: ${(props) => props.theme.text};
 `;
 
 const GameInfoDiv = styled.div`
