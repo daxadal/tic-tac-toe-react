@@ -1,11 +1,31 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 import { Player, HistoryItem, Squares } from "./types";
 
 import Board from "./Board";
 import History from "./History";
 
-import "./Game.css";
+const Title = styled.h1`
+  text-align: center;
+`;
+
+const WrapperDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  max-width: 640px;
+  margin: auto;
+`;
+
+const HalfDiv = styled.div`
+  flex: 1 0 0;
+`;
+
+const StatusDiv = styled.div`
+  margin-bottom: 10px;
+`;
 
 export default function Game() {
   const [player, setPlayer] = useState<Player>("X");
@@ -64,30 +84,32 @@ export default function Game() {
   const winnerLine = calculateWinnerLine(history[history.length - 1].squares);
   const winner =
     winnerLine.length === 0 ? null : history.length % 2 === 0 ? "X" : "O";
-  const status =
-    history.length === 10
-      ? "Tie"
-      : winner
-      ? `Winner: ${winner}`
-      : `Next player: ${player}`;
+  const status = winner
+    ? `Winner: ${winner}`
+    : history.length === 10
+    ? "Tie"
+    : `Next player: ${player}`;
 
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board
-          squares={history[currentStep].squares}
-          onClick={handleClick}
-          winnerLine={winnerLine}
-        />
-      </div>
-      <div className="game-info">
-        <div className="status">{status}</div>
-        <History
-          history={history}
-          onClick={jumpToMove}
-          currentStep={currentStep}
-        />
-      </div>
-    </div>
+    <>
+      <Title>Tic Tac Toe</Title>
+      <WrapperDiv>
+        <HalfDiv>
+          <Board
+            squares={history[currentStep].squares}
+            onClick={handleClick}
+            winnerLine={winnerLine}
+          />
+        </HalfDiv>
+        <HalfDiv>
+          <StatusDiv>{status}</StatusDiv>
+          <History
+            history={history}
+            onClick={jumpToMove}
+            currentStep={currentStep}
+          />
+        </HalfDiv>
+      </WrapperDiv>
+    </>
   );
 }

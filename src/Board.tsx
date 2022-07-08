@@ -1,10 +1,14 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Squares } from "./types";
 
 import Square from "./Square";
 
-import "./Board.css";
+const BoardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
 
 interface BoardProps {
   squares: Squares;
@@ -21,19 +25,14 @@ export default function Board(props: BoardProps) {
         key={i}
         value={squares[i]}
         onClick={() => onClick(i)}
-        bold={winnerLine.includes(i)}
+        highlight={winnerLine.includes(i)}
       />
     );
   }
 
   return (
-    <div>
-      {new Array(3).fill(null).map((_v, row) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <div key={`row-${row}`} className="board-row">
-          {new Array(3).fill(null).map((_, col) => renderSquare(row * 3 + col))}
-        </div>
-      ))}
-    </div>
+    <BoardContainer>
+      {new Array(9).fill(null).map((_v, index) => renderSquare(index))}
+    </BoardContainer>
   );
 }
