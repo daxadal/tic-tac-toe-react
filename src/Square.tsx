@@ -16,6 +16,7 @@ const StyledButton = styled.button<{ bold: boolean }>`
   text-align: center;
   width: 34px;
   color: ${(props) => (props.bold ? "green" : props.theme.text)};
+  background-color: ${(props) => props.theme.background};
 
   &:focus {
     outline: none;
