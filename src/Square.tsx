@@ -6,14 +6,14 @@ import { NullablePlayer } from "./types";
 import { ReactComponent as Circle } from "./circle.svg";
 import { ReactComponent as Cross } from "./cross.svg";
 
-const StyledButton = styled.button<{ bold: boolean }>`
+const StyledButton = styled.button<{ highlight: boolean }>`
   aspect-ratio: 1/ 1;
   display: flex;
   align-items: center;
   padding: 5%;
 
   border: 1px solid ${(props) => props.theme.border};
-  color: ${(props) => (props.bold ? "green" : props.theme.text)};
+  color: ${(props) => (props.highlight ? "green" : props.theme.text)};
   background-color: ${(props) => props.theme.background};
 
   .kbd-navigation &:focus {
@@ -29,15 +29,15 @@ const Content = styled.svg`
 
 interface SquareProps {
   value: NullablePlayer;
-  bold: boolean;
+  highlight: boolean;
   onClick: () => void;
 }
 
 export default function Square(props: SquareProps) {
-  const { bold, onClick, value } = props;
+  const { highlight, onClick, value } = props;
 
   return (
-    <StyledButton type="button" onClick={onClick} bold={bold}>
+    <StyledButton type="button" onClick={onClick} highlight={highlight}>
       <Content
         as={value === "X" ? Cross : value === "O" ? Circle : undefined}
       />

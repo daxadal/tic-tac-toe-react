@@ -25,7 +25,7 @@ export default function Board(props: BoardProps) {
         key={i}
         value={squares[i]}
         onClick={() => onClick(i)}
-        bold={winnerLine.includes(i)}
+        highlight={winnerLine.includes(i)}
       />
     );
   }
