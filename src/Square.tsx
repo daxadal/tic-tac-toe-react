@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { NullablePlayer } from "./types";
 
 const StyledButton = styled.button<{ bold: boolean }>`
-  background: #fff;
-  border: 1px solid #999;
+  border: 1px solid ${(props) => props.theme.border};
   float: left;
   font-size: 24px;
   font-weight: bold;
@@ -16,14 +15,14 @@ const StyledButton = styled.button<{ bold: boolean }>`
   padding: 0;
   text-align: center;
   width: 34px;
-  color: ${(props) => (props.bold ? "green" : "black")};
+  color: ${(props) => (props.bold ? "green" : props.theme.text)};
 
   &:focus {
     outline: none;
   }
 
   .kbd-navigation &:focus {
-    background: #ddd;
+    background: ${(props) => props.theme.foreground};
   }
 `;
 

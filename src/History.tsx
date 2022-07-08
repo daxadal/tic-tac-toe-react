@@ -11,6 +11,13 @@ interface HistoryProps {
 
 const StyledButton = styled.button<{ stepIsCurrent: boolean }>`
   font-weight: ${(props) => (props.stepIsCurrent ? "bold" : "normal")};
+
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 8px;
+  margin: 2px;
 `;
 
 export default function History(props: HistoryProps) {
