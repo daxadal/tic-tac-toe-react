@@ -18,6 +18,7 @@ const StyledButton = styled.button<{ stepIsCurrent: boolean }>`
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 8px;
   margin: 2px;
+  padding: 4px;
 `;
 
 export default function History(props: HistoryProps) {

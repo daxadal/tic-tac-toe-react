@@ -5,12 +5,9 @@ import { Squares } from "./types";
 
 import Square from "./Square";
 
-const BoardRow = styled.div`
-  &:after {
-    clear: both;
-    content: "";
-    display: table;
-  }
+const BoardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 interface BoardProps {
@@ -34,13 +31,8 @@ export default function Board(props: BoardProps) {
   }
 
   return (
-    <div>
-      {new Array(3).fill(null).map((_v, row) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <BoardRow key={`row-${row}`}>
-          {new Array(3).fill(null).map((_, col) => renderSquare(row * 3 + col))}
-        </BoardRow>
-      ))}
-    </div>
+    <BoardContainer>
+      {new Array(9).fill(null).map((_v, index) => renderSquare(index))}
+    </BoardContainer>
   );
 }

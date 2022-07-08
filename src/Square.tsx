@@ -3,28 +3,28 @@ import styled from "styled-components";
 
 import { NullablePlayer } from "./types";
 
+import { ReactComponent as Circle } from "./circle.svg";
+import { ReactComponent as Cross } from "./cross.svg";
+
 const StyledButton = styled.button<{ bold: boolean }>`
+  aspect-ratio: 1/ 1;
+  display: flex;
+  align-items: center;
+  padding: 5%;
+
   border: 1px solid ${(props) => props.theme.border};
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
   color: ${(props) => (props.bold ? "green" : props.theme.text)};
   background-color: ${(props) => props.theme.background};
-
-  &:focus {
-    outline: none;
-  }
 
   .kbd-navigation &:focus {
     background: ${(props) => props.theme.foreground};
   }
+`;
+
+const Content = styled.svg`
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 `;
 
 interface SquareProps {
@@ -38,7 +38,9 @@ export default function Square(props: SquareProps) {
 
   return (
     <StyledButton type="button" onClick={onClick} bold={bold}>
-      {value}
+      <Content
+        as={value === "X" ? Cross : value === "O" ? Circle : undefined}
+      />
     </StyledButton>
   );
 }
