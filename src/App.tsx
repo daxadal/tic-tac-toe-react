@@ -1,5 +1,6 @@
 import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { Normalize } from "styled-normalize";
 
 import Game from "./Game";
 
@@ -37,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
 export default function App() {
   return (
     <ThemeProvider theme={lightTheme}>
+      <Normalize />
       <GlobalStyle />
       <Game />
     </ThemeProvider>
