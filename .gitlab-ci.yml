@@ -1,0 +1,54 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
+
+# Full project: https://gitlab.com/pages/plain-html
+default:
+  interruptible: true
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"' # Run when requested manually
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # Run on merge request
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_OPEN_MERGE_REQUESTS' # Avoid duplicated pipelines
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH' # Run on branch push
+      when: always
+    - when: never # Otherwise -> Don't pipeline
+
+stages:
+  - build
+  - deploy
+
+compile:
+  stage: build
+  image: node:16-bullseye-slim
+  cache:
+    paths:
+      - build/
+    policy: push
+  script:
+    - echo "Pipeline triggered by '$CI_PIPELINE_SOURCE'"
+    - npm ci
+    - npm run build
+
+pages:
+  stage: deploy
+  cache:
+    paths:
+      - build/
+    policy: push
+  script:
+    - mkdir .public
+    - cp -r ./build/* .public
+    - rm -rf public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
