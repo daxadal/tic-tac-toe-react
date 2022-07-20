@@ -18,7 +18,7 @@ A React version of Tic Tac Toe based on the [React Tutorial Project](https://rea
 
 # Availability
 
-_(This server is not currently being served on the Internet)_
+- https://egarciadececa.gitlab.io/tic-tac-toe/
 
 # Installation and execution
 
