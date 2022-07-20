@@ -41,10 +41,10 @@ pages:
   cache:
     paths:
       - build/
-    policy: push
+    policy: pull
   script:
     - mkdir .public
-    - cp -r ./build/* .public
+    - cp -r build/* .public
     - rm -rf public
     - mv .public public
   artifacts:
