@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { HistoryItem } from "./types";
+import { HistoryItem } from "../types";
 
 interface HistoryProps {
   history: HistoryItem[];

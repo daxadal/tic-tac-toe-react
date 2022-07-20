@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-import { NullablePlayer } from "./types";
+import { NullablePlayer } from "../types";
 
-import { ReactComponent as Circle } from "./circle.svg";
-import { ReactComponent as Cross } from "./cross.svg";
+import { ReactComponent as Circle } from "../assets/circle.svg";
+import { ReactComponent as Cross } from "../assets/cross.svg";
 
 const StyledButton = styled.button<{ highlight: boolean }>`
   aspect-ratio: 1/ 1;

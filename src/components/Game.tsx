@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Player, HistoryItem, Squares } from "./types";
+import { Player, HistoryItem, Squares } from "../types";
 
 import Board from "./Board";
 import History from "./History";

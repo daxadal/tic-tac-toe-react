@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Squares } from "./types";
+import { Squares } from "../types";
 
 import Square from "./Square";
 
