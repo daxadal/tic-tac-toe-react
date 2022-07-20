@@ -2,20 +2,8 @@ import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Normalize } from "styled-normalize";
 
-import Game from "./Game";
-
-const lightTheme = {
-  background: "#fff",
-  foreground: "#ddd",
-  border: "#999",
-  text: "#000",
-};
-const darkTheme = {
-  background: "#111",
-  foreground: "#333",
-  border: "#aaa",
-  text: "#eee",
-};
+import Game from "./components/Game";
+import { lightTheme } from "./themes";
 
 const GlobalStyle = createGlobalStyle`
   :root {
