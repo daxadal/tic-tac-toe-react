@@ -52,3 +52,25 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy-to-server:
+  stage: deploy
+  image: instrumentisto/rsync-ssh:alpine
+  cache:
+    paths:
+      - build/
+    policy: pull
+  environment:
+    name: development
+  script:
+    - cp $SERVER_KEY key.pem
+    - ./deploy-pipeline.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "release"'
+      when: on_success
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: on_success
+    - if: '$CI_OPEN_MERGE_REQUESTS'
+      when: on_success
+    - when: manual
+      allow_failure: true
