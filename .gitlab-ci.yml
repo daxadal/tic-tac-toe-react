@@ -68,7 +68,7 @@ deploy-to-server:
   environment:
     name: development
   script:
-    - cp $SERVER_KEY key.pem
+    - cp $SERVER_KEY server_key
     - ./deploy-pipeline.sh
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
