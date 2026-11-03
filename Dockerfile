@@ -8,6 +8,7 @@
 
 ARG NODE_VERSION=22.17.0
 
+# region <build>
 FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /usr/src/app
 
@@ -26,21 +27,6 @@ RUN npm prune --omit=dev
 # endregion <build>
 
 # region <release>
-FROM node:${NODE_VERSION}-alpine AS release 
-WORKDIR /usr/src/app
-
-ENV NODE_ENV production
-
-COPY --from=build /usr/src/app/build ./build
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/package.json .
-
-USER node
-
-EXPOSE 3000
-CMD npm run start:pro
-
-
 FROM nginx:1.27-alpine
 
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
@@ -48,3 +34,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
+# endregion <release>
