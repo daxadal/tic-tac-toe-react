@@ -18,6 +18,7 @@ A React version of Tic Tac Toe based on the [React Tutorial Project](https://rea
 
 # Availability
 
+- https://tic-tac-toe.egarciadececa.dev/
 - https://egarciadececa.gitlab.io/tic-tac-toe/
 
 # Installation and execution
@@ -51,4 +52,3 @@ This project uses GitLab CI/CD to compile, test, and deploy the code. The follow
 
 - **Dotenv**: `DOTENV_JEST` (file) and `DOTENV_PROD` (file) contain `.env` files adapted for jest testing and production deployment respectively
 - **Depoyment**: `DEPLOY_HOST`, `DEPLOY_USER`, and `DEPLOY_SSH_KEY` (file) contain the IP, user and SSH key respectively to connect to the remote server for
-
