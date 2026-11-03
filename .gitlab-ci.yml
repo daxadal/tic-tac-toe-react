@@ -39,7 +39,7 @@ workflow:
   cache:
     paths:
       - node_modules/
-      - dist/
+      - build/
 
 .docker-step:
   extends: .optional-step
@@ -104,6 +104,7 @@ pages:
   stage: deploy
   cache:
     paths:
+      - node_modules/
       - build/
     policy: pull
   script:
