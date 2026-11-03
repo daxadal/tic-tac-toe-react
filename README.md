@@ -18,8 +18,6 @@ A React version of Tic Tac Toe based on the [React Tutorial Project](https://rea
 
 # Availability
 
-- https://tic-tac-toe.daxadal.tk/
-- https://tic-tac-toe.egarciadececa.tk/
 - https://egarciadececa.gitlab.io/tic-tac-toe/
 
 # Installation and execution
