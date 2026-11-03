@@ -1,16 +1,19 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
-
-# Full project: https://gitlab.com/pages/plain-html
+# #region - Global definition
 default:
+  image: node:22-bullseye-slim
   interruptible: true
+
+stages:
+  - compile
+  - test
+  - docker-build
+  - deploy
 
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "web"' # Run when requested manually
+      when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # Run on merge request
       when: always
@@ -19,24 +22,85 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH' # Run on branch push
       when: always
     - when: never # Otherwise -> Don't pipeline
+# #endregion - Global definition
 
-stages:
-  - build
-  - deploy
+# #region - Reusables
+.optional-step:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: on_success
+    - if: "$CI_OPEN_MERGE_REQUESTS"
+      when: on_success
+    - when: manual
+      allow_failure: true
 
-compile:
-  stage: build
-  image: node:16-bullseye-slim
+.node-step:
+  image: node:22-bullseye-slim
   cache:
     paths:
-      - build/
+      - node_modules/
+      - dist/
+
+.docker-step:
+  extends: .optional-step
+  stage: docker-build
+  image: quay.io/buildah/stable
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+# #endregion - Reusables
+
+# #region - Variables
+variables:
+  IMAGE: $CI_REGISTRY_IMAGE:latest
+  IMAGE_AMD: $CI_REGISTRY_IMAGE:amd64
+  IMAGE_ARM: $CI_REGISTRY_IMAGE:arm64
+# #endregion - Variables
+
+# #region - Steps
+compile:
+  stage: compile
+  extends: .node-step
+  cache:
     policy: push
   script:
-    - echo "Pipeline triggered by '$CI_PIPELINE_SOURCE'"
     - npm ci
     - npm run build
 
+lint:
+  stage: test
+  extends: .node-step
+  cache:
+    policy: pull
+  script:
+    - npm run lint
+
+build-amd64:
+  extends: .docker-step
+  tags:
+    - saas-linux-small-amd64
+  script:
+    - buildah build --platform=linux/amd64 -t $IMAGE_AMD .
+    - buildah push $IMAGE_AMD
+
+build-arm64:
+  extends: .docker-step
+  tags:
+    - saas-linux-small-arm64
+  script:
+    - buildah build --platform=linux/arm64 -t $IMAGE_ARM .
+    - buildah push $IMAGE_ARM
+
+build-manifest:
+  extends: .docker-step
+  needs: ["build-arm64", "build-amd64"]
+  script:
+    - buildah manifest create $IMAGE
+    - buildah manifest add $IMAGE docker://$IMAGE_AMD
+    - buildah manifest add $IMAGE docker://$IMAGE_ARM
+    - buildah manifest push --all $IMAGE
+
 pages:
+  extends: .optional-step
   stage: deploy
   cache:
     paths:
@@ -50,30 +114,20 @@ pages:
   artifacts:
     paths:
       - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: on_success
-    - if: '$CI_OPEN_MERGE_REQUESTS'
-      when: on_success
-    - when: manual
-      allow_failure: true
 
-deploy-to-server:
+deploy:
+  extends: .optional-step
   stage: deploy
-  image: instrumentisto/rsync-ssh:alpine
-  cache:
-    paths:
-      - build/
-    policy: pull
-  environment:
-    name: development
+  image: alpine:3.20
+  needs: ["build-manifest"]
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval "$(ssh-agent -s)"
+    - chmod 400 "$DEPLOY_SSH_KEY"
+    - ssh-add "$DEPLOY_SSH_KEY"
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
   script:
-    - cp $SERVER_KEY server_key
-    - ./deploy-pipeline.sh
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-      when: on_success
-    - if: '$CI_OPEN_MERGE_REQUESTS'
-      when: on_success
-    - when: manual
-      allow_failure: true
+    - scp $DOTENV_PROD "$DEPLOY_USER@$DEPLOY_HOST:~/dax-apps/env/$CI_PROJECT_NAME.env"
+    - ssh "$DEPLOY_USER@$DEPLOY_HOST" "SERVICE=$CI_PROJECT_NAME ~/dax-apps/deploy.sh"
+#endregion - Steps

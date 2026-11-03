@@ -44,3 +44,11 @@ Project can be linted using the following command:
 ```bash
 npm run lint
 ```
+
+# CI/CD
+
+This project uses GitLab CI/CD to compile, test, and deploy the code. The following variables must be set:
+
+- **Dotenv**: `DOTENV_JEST` (file) and `DOTENV_PROD` (file) contain `.env` files adapted for jest testing and production deployment respectively
+- **Depoyment**: `DEPLOY_HOST`, `DEPLOY_USER`, and `DEPLOY_SSH_KEY` (file) contain the IP, user and SSH key respectively to connect to the remote server for
+
