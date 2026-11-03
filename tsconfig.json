@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": false,
-    "target": "ES2025",
+    "target": "ESNext",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "rootDir": "./src",
