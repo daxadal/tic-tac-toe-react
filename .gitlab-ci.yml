@@ -130,5 +130,5 @@ deploy:
     - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
   script:
     - scp $DOTENV_PROD "$DEPLOY_USER@$DEPLOY_HOST:~/dax-apps/env/$CI_PROJECT_NAME.env"
-    - ssh "$DEPLOY_USER@$DEPLOY_HOST" "SERVICE=$CI_PROJECT_NAME ~/dax-apps/deploy.sh"
+    - ssh "$DEPLOY_USER@$DEPLOY_HOST" "SERVICE=tic-tac-toe ~/dax-apps/deploy.sh"
 #endregion - Steps
