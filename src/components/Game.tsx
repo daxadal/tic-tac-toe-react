@@ -87,8 +87,8 @@ export default function Game() {
   const status = winner
     ? `Winner: ${winner}`
     : history.length === 10
-    ? "Tie"
-    : `Next player: ${player}`;
+      ? "Tie"
+      : `Next player: ${player}`;
 
   return (
     <>

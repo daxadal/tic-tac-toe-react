@@ -46,7 +46,7 @@ export default function History(props: HistoryProps) {
     );
   }
 
-  const stepList = history.map((squares, step) => renderStep(step));
+  const stepList = history.map((_, step) => renderStep(step));
   return (
     <>
       <ol>{ascending ? stepList : stepList.reverse()}</ol>
