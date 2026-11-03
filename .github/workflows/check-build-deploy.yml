@@ -104,7 +104,7 @@ jobs:
           script: SERVICE=${{ github.event.repository.name }} ~/dax-apps/deploy.sh
 
   pages:
-    needs: build
+    needs: base-checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
