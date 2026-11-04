@@ -18,8 +18,8 @@ A React version of Tic Tac Toe based on the [React Tutorial Project](https://rea
 
 # Availability
 
-- https://tic-tac-toe.daxadal.tk/
-- https://tic-tac-toe.egarciadececa.tk/
+- https://tic-tac-toe.egarciadececa.dev/
+- https://daxadal.github.io/tic-tac-toe-react/
 - https://egarciadececa.gitlab.io/tic-tac-toe/
 
 # Installation and execution
@@ -46,3 +46,10 @@ Project can be linted using the following command:
 ```bash
 npm run lint
 ```
+
+# CI/CD
+
+This project uses GitLab CI/CD to compile, test, and deploy the code. The following variables must be set:
+
+- **Dotenv**: `DOTENV_JEST` (file) and `DOTENV_PROD` (file) contain `.env` files adapted for jest testing and production deployment respectively
+- **Depoyment**: `DEPLOY_HOST`, `DEPLOY_USER`, and `DEPLOY_SSH_KEY` (file) contain the IP, user and SSH key respectively to connect to the remote server for
