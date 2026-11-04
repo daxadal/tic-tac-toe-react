@@ -30,7 +30,7 @@ RUN npm prune --omit=dev
 FROM node:${NODE_VERSION}-alpine AS release 
 WORKDIR /usr/src/app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=build /usr/src/app/build ./build
 COPY --from=build /usr/src/app/package.json .
