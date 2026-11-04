@@ -38,5 +38,5 @@ COPY --from=build /usr/src/app/package.json .
 RUN npm i -g serve
 
 EXPOSE 8080
-CMD npm run start:pro
+CMD ["npm", "run", "start:pro"]
 # endregion <release>
