@@ -101,7 +101,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: SERVICE=${{ github.event.repository.name }} ~/dax-apps/deploy.sh
+          script: SERVICE=tic-tac-toe ~/dax-apps/deploy.sh
 
   pages:
     needs: base-checks
