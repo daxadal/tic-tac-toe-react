@@ -10,6 +10,7 @@
     "lint:fix": "eslint ./src --max-warnings 0 --fix",
     "prettier": "prettier -w ./src",
     "start": "react-scripts start",
+    "start:pro": "serve -s build -l 8080",
     "test": "react-scripts test",
     "tsc": "tsc --noEmit"
   },
@@ -37,6 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "prettier": "^3.9.10",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.6",
     "typescript": "^4.9.5"
   },
   "browserslist": {

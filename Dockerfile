@@ -27,11 +27,16 @@ RUN npm prune --omit=dev
 # endregion <build>
 
 # region <release>
-FROM nginx:1.27-alpine
+FROM node:${NODE_VERSION}-alpine AS release 
+WORKDIR /usr/src/app
 
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+ENV NODE_ENV production
+
+COPY --from=build /usr/src/app/build ./build
+COPY --from=build /usr/src/app/package.json .
+
+RUN npm i -g serve
 
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+CMD npm run start:pro
 # endregion <release>
